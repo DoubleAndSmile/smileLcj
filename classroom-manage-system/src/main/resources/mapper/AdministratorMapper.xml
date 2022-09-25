@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iflytek.classroommanagesystem.mapper.AdministratorMapper">
+
+    <resultMap id="BaseResultMap" type="com.iflytek.classroommanagesystem.entity.Administrator">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="CHAR"/>
+            <result property="account" column="account" jdbcType="CHAR"/>
+            <result property="password" column="password" jdbcType="CHAR"/>
+            <result property="phone" column="phone" jdbcType="CHAR"/>
+            <result property="email" column="email" jdbcType="CHAR"/>
+            <result property="gender" column="gender" jdbcType="CHAR"/>
+            <result property="isFreeze" column="is_freeze" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="columns">
+        id, name, account, phone, email, gender, is_freeze
+    </sql>
+    <update id="update">
+        update administrator
+        <set>
+            <if test="name != null and name != ''">name=#{name},</if>
+            <if test="account != null and account != ''">account=#{account},</if>
+            <if test="phone != null and phone != ''">phone=#{phone},</if>
+            <if test="email != null and email != ''">email=#{email},</if>
+            <if test="gender != null and gender != ''">gender=#{gender},</if>
+            <if test="isFreeze != null">is_freeze=#{isFreeze}</if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updatePassword">
+        update administrator
+        set password = #{md5Password}
+        where id = #{adId}
+    </update>
+
+    <update id="updateFreeze">
+        update administrator
+        set is_freeze = #{isFreeze}
+        where id = #{adId}
+    </update>
+
+    <delete id="deleteById">
+        delete from administrator where id = #{adId}
+    </delete>
+
+    <delete id="deleteByIds">
+        delete from administrator where id in
+        <foreach collection="adIds" item="adId" open="(" close=")" separator=",">
+            #{adId}
+        </foreach>
+    </delete>
+
+    <select id="getAdministratorList" resultType="com.iflytek.classroommanagesystem.entity.Administrator">
+        select <include refid="columns"/>
+        from administrator
+        <where>
+            <if test="name != null and name != ''">name=#{name}</if>
+            <if test="account != null and account != ''">and account=#{account}</if>
+            <if test="phone != null and phone != ''">and phone=#{phone}</if>
+            <if test="email != null and email != ''">and email=#{email}</if>
+            <if test="gender != null and gender != ''">and gender=#{gender}</if>
+            <if test="isFreeze != null">and is_freeze=#{isFreeze}</if>
+        </where>
+    </select>
+
+    <select id="getAdministratorByAccount" resultType="com.iflytek.classroommanagesystem.entity.Administrator">
+        select <include refid="columns"/>
+        from administrator
+        where account = #{account}
+    </select>
+</mapper>

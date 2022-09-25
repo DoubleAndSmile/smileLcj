@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iflytek.classroommanagesystem.mapper.AdministratorMeunMapper">
+
+    <resultMap id="BaseResultMap" type="com.iflytek.classroommanagesystem.entity.AdministratorMenu">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="administratorId" column="administrator_id" jdbcType="INTEGER"/>
+            <result property="meunCode" column="meun_code" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,administrator_id,meun_code
+    </sql>
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iflytek.classroommanagesystem.mapper.ClassroomMapper">
+
+    <resultMap id="BaseResultMap" type="com.iflytek.classroommanagesystem.entity.Classroom">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="classNo" column="class_no" jdbcType="VARCHAR"/>
+            <result property="siteCount" column="site_count" jdbcType="INTEGER"/>
+            <result property="isUse" column="is_use" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,class_no,
+        site_count,is_use
+    </sql>
+    <update id="update">
+        update classroom
+        <set>
+            <if test="name != null and name!= ''">
+                name = #{name},
+            </if>
+            <if test="classNo != null and classNo!= ''">
+                class_no = #{classNo},
+            </if>
+            <if test="siteCount != null">
+                site_count = #{siteCount},
+            </if>
+            <if test="isUse != null">
+                is_use = #{isUse}
+            </if>
+        </set>
+
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <delete id="deleteById">
+        delete from classroom where id = #{classRoomId}
+    </delete>
+    <delete id="deleteByIds">
+        delete from classroom where id in
+        <foreach collection="classroomIds" item="classroomId" open="(" close=")" separator=",">
+            #{classroomId}
+        </foreach>
+    </delete>
+    <select id="getClassroomById" resultMap="BaseResultMap">
+        select id, name, class_no, site_count,is_use
+        from  classroom
+        where id = #{classRoomId}
+    </select>
+    <select id="getClassRoomList" resultMap="BaseResultMap">
+        select id, name, class_no, site_count,is_use
+        from  classroom
+        <where>
+            <if test="name != null and name!= ''">
+                name = #{name}
+            </if>
+            <if test="classNo != null and classNo!= ''">
+                and class_no = #{classNo}
+            </if>
+            <if test="isUse != null">
+                and is_use = #{isUse}
+            </if>
+        </where>
+    </select>
+</mapper>

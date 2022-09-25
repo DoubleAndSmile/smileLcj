@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <input type="hidden" name="id" th:value="${administrator.id}">
+    <div class="layui-form-item">
+        <label class="layui-form-label required">管理员姓名</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" th:value="${administrator.name}" maxlength="20" lay-verify="required" lay-reqtext="管理员姓名不能为空" placeholder="请输入管理员姓名" value="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">账号</label>
+        <div class="layui-input-block">
+            <input type="text" name="account" th:value="${administrator.account}" maxlength="20" lay-verify="required" lay-reqtext="账号不能为空" placeholder="请输入账号" value="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">联系电话</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" th:value="${administrator.phone}" maxlength="20" lay-verify="required" lay-reqtext="联系电话不能为空" placeholder="请输入联系电话" value="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">邮箱</label>
+        <div class="layui-input-block">
+            <input type="text" name="email" th:value="${administrator.email}" maxlength="20" lay-verify="required" placeholder="请输入邮箱" value="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">性别</label>
+        <div class="layui-input-block">
+            <input type="text" name="gender" th:value="${administrator.gender}" maxlength="2" lay-verify="required" lay-reqtext="性别不能为空" placeholder="请输入性别" value="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">是否冻结</label>
+        <div class="layui-input-block">
+            <input type="radio" name="isFreeze" value="1" title="冻结" th:checked="${administrator.isFreeze}">
+            <input type="radio" name="isFreeze" value="0" title="未冻结" th:checked="${!administrator.isFreeze}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+<script src="/lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            console.log(data.field)
+            //异步保存数据
+            $.ajax({
+                type:'post',
+                url:'/back/admin/edit',
+                dataType:'json',
+                data:data.field,
+                success: function (res){
+                    if (res.code == 0){//表示添加成功
+                        layer.msg(res.msg, function (){
+                            //刷新表格数据
+                            parent.layui.table.reload('currentTableId')
+                           //关闭弹出层
+                            var iframeIndex = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(iframeIndex);
+                        });
+                    }else {
+                        layer.msg(res.msg)
+                    }
+                }
+            })
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+
+                // 关闭弹出层
+                layer.close(index);
+
+                var iframeIndex = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(iframeIndex);
+
+            });
+
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>
