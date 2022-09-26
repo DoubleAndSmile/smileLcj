@@ -19,4 +19,40 @@
         parent_code,url,sort,
         is_use
     </sql>
+    <update id="updateMenu">
+        update menu
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="code != null and code != ''">code = #{code},</if>
+            <if test="parentCode != null and parentCode != ''">parent_code = #{parentCode},</if>
+            <if test="url != null and url != ''">url = #{url},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="isUse != null">is_use = #{isUse}</if>
+        </set>
+    where id = #{id}
+    </update>
+    <update id="updateMenuUse">
+        update menu
+        set is_use=#{isUse}
+        where id=#{menuId}
+    </update>
+    <delete id="deleteById">
+        delete menu where id = #{menuId}
+    </delete>
+    <select id="getMenuList" resultType="com.iflytek.classroommanagesystem.entity.Menu">
+        select name,code,parent_code,url,sort,is_use
+        from menu
+        <where>
+            <if test="name != null and name != ''">name = #{name}</if>
+            <if test="code != null and code != ''">and code = #{code}</if>
+            <if test="parentCode != null and parentCode != ''">and parent_code = #{parentCode}</if>
+            <if test="isUse != null">and is_use = #{isUse}</if>
+        </where>
+    </select>
+    <select id="getMenuByCode" resultType="com.iflytek.classroommanagesystem.entity.Menu">
+        select name,code,parent_code,url,sort,is_use where code = #{code}
+    </select>
+    <select id="getMenuById" resultType="com.iflytek.classroommanagesystem.entity.Menu">
+        select name,code,parent_code,url,sort,is_use where id = #{menuId}
+    </select>
 </mapper>

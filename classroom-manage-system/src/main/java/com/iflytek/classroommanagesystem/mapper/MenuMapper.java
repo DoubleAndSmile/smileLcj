@@ -1,7 +1,11 @@
 package com.iflytek.classroommanagesystem.mapper;
 
-import com.iflytek.classroommanagesystem.entity.Menu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.iflytek.classroommanagesystem.entity.Menu;
+import com.iflytek.classroommanagesystem.query.MenuQuery;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author 26826
@@ -10,6 +14,17 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.iflytek.classroommanagesystem.entity.Menu
 */
 public interface MenuMapper extends BaseMapper<Menu> {
+    int updateMenu(Menu menu);
+
+    int updateMenuUse(@Param("menuId") Integer menuId,@Param("isUse") Boolean isUse);
+
+    int deleteById(Integer menuId);
+
+    Menu getMenuById(Integer menuId);
+
+    Menu getMenuByCode(String code);
+
+    List<Menu> getMenuList(MenuQuery query);
 
 }
 
