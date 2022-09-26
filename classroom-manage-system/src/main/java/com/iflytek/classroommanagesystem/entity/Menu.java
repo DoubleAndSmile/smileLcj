@@ -10,13 +10,13 @@ import java.io.Serializable;
 
 /**
  * 
- * @TableName meun
+ * @TableName menu
  */
 @TableName(value ="menu")
 @Data
 public class Menu implements Serializable {
     /**
-     * ID
+     * 主键id
      */
     @TableId(type = IdType.AUTO)
     private Integer id;
@@ -47,7 +47,7 @@ public class Menu implements Serializable {
     private Integer sort;
 
     /**
-     * 是否启用 1-启用0-未启用
+     * 是否启用：0-未启用，1-启用
      */
     private Integer isUse;
 
