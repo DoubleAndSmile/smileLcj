@@ -20,7 +20,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu>
     implements MenuService{
 
     @Autowired
-    MenuMapper menuMapper;
+    private MenuMapper menuMapper;
 
     @Override
     public int updateMenu(Menu menu) {
